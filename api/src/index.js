@@ -1,2 +1,3 @@
 require('./config/db');
-require('./config/server');
+const server = require('./config/server');
+require('./config/routes')(server);
