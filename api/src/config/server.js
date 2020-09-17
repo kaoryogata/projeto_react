@@ -16,5 +16,5 @@ server.use(bodyParser.json());
 server.use(cors);
 
 //Sobe o servidor na porta e exporta o servidor no módulo
-server.listen(port, () => console.log('Servidor no ar na porta ${port}'));
+server.listen(port, () => console.log(`Servidor no ar na porta: ${port}`));
 module.exports = server;
