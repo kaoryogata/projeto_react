@@ -1,3 +1,4 @@
+//Cors é a política de privacidade
 module.exports = (_, resposta, proximo) => { 
     //Aceita qualquer origem
     resposta.header("Access-Control-Allow-Origin", "*"); 

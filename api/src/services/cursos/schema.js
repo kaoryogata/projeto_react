@@ -1,3 +1,4 @@
+//schema é o modelo do banco de dados
 const nodeRestful = require('node-restful');
 
 const schema = nodeRestful.mongoose.Schema({
@@ -11,4 +12,5 @@ const schema = nodeRestful.mongoose.Schema({
     }
 });
 
+//Cria a tabela no banco de dados
 module.exports = nodeRestful.model('curso', schema);
