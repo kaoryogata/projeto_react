@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Componente1 from './Componente1';
+import {Componente2} from './Componente2';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Componente1 />
+    <Componente2 />
   </React.StrictMode>,
   document.getElementById('root')
 );
-
