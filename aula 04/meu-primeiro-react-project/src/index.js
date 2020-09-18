@@ -7,7 +7,8 @@ import './index.css';
 ReactDOM.render(
   <React.StrictMode>
     <Componente1 />
-    <Componente2 />
+    <Componente2 title = "Página 2"/>
+    <Componente2 title = "Página 3"/>
   </React.StrictMode>,
   document.getElementById('root')
 );
