@@ -1,23 +1,41 @@
 import React from 'react';
-import {Lista} from './Lista';
+import { Lista} from './Lista'
 
 export default class Componente1 extends React.Component {
-    //Sobrescrever a funçao render que retorna um HTML
 
     state = {
-        title: 'Meu Primeiro Componente do React',
-        cursos: ['React', 'Kotlin', 'Angular']
+        title : 'Meu Primeiro Componente do React',
+        cursos : ['React', 'Kotlin', 'Angular', 'Vue', 'Blazor']
     }
 
-    render(){
+    componentDidMount(){
+        this.setState({title : 'text3'});
+        console.log('componentDidMount');
+    }
+
+    shouldComponentUpdate(){
+        console.log('shouldComponentUpdate');
+        return true;
+    }
+
+    componentDidUpdate(){
+        console.log('componentWillUpdate');
+    }
+
+    componentWillUnmount(){
+        console.log('componentWillUnmount');
+    }
+
+    render() {
+        console.log('render');
+        const lista = this.state.cursos.map((curso, i) => (
+            <Lista key={i} info={curso}/>
+        ));
 
         return (
-            //React só aceita apenas UM elemento pai <>
             <>
-                <h1 className= "fonte">{this.state.title}</h1>
-                {this.state.cursos.map((curso, i) => (
-                    <Lista key={i} info={curso}/>
-                ))}
+                <h1 className="fonte">{this.state.title}</h1>
+                {lista}
             </>
         );
     }
