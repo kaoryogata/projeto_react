@@ -10,4 +10,7 @@ module.exports = (server) => {
 
     const contatosServices = require('../services/contatos');
     contatosServices.register(router, '/contatos');
+
+    const usuariosServices = require('../services/usuarios');
+    usuariosServices.register(router, '/usuarios');
 }
