@@ -8,6 +8,7 @@ export default class Componente1 extends React.Component {
         cursos : ['React', 'Kotlin', 'Angular', 'Vue', 'Blazor']
     }
 
+    //Depois do render mas uma única vez
     componentDidMount(){
         this.setState({title : 'text3'});
         console.log('componentDidMount');

@@ -6,6 +6,7 @@ export const Componente3 = () => {
 
     //Controla quando a função precisa renderizar de novo, ele existe enquanto o componente existir
     useEffect(() => {
+        //Como se fosse o didMount e didUpdate do ciclo de vida
         console.log('Componente renderizou')
         setTitle('Texto mudou')
 
