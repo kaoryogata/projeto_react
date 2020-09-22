@@ -1,10 +1,14 @@
 import React from 'react';
+import { Cabecalho } from '../componentes/Cabecalho';
+import { AgrupamentoCurso } from '../componentes/curso/Agrupamento';
 
 export class CursoPage extends React.Component {
-    render(){
-        return(
+    render() {
+        return (
             <div className={"container"}>
-                <h1>Cadastro de Cursos</h1>
+                <Cabecalho titulo={"Cursos"} 
+                    subtitulo={"cadastro de cursos"} />
+                <AgrupamentoCurso/>
             </div>
         )
     }
