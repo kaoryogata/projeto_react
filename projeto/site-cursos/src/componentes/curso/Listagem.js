@@ -5,13 +5,13 @@ export const ListagemCurso = props => {
         const cursos = props.cursos || [];
         return cursos.map(curso => (
             <tr key={curso._id}>
-                <td class="align-middle">{curso.codigo}</td>
-                <td class="align-middle">{curso.descricao}</td>
-                <td class="align-middle">
+                <td className="align-middle">{curso.codigo}</td>
+                <td className="align-middle">{curso.descricao}</td>
+                <td className="align-middle">
                     <button className="btn btn-success mr-2">
                         <i className="fa fa-check"></i> 
                     </button>
-                    <button className="btn btn-danger">
+                    <button className="btn btn-danger" onClick={() => props.excluirCurso(curso._id)}>
                         <i className="fa fa-trash-o"></i>
                     </button>
                 </td>
