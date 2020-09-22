@@ -18,9 +18,11 @@ export class AgrupamentoCurso extends React.Component {
         this.setPreco = this.setPreco.bind(this);
         this.limpar = this.limpar.bind(this);
         this.salvar = this.salvar.bind(this);
+        this.selecionarCurso = this.selecionarCurso.bind(this);
     }
 
     initialState = {
+        _id: null,
         codigo: 0,
         descricao: '',
         cargaHoraria: 0,
@@ -89,22 +91,29 @@ export class AgrupamentoCurso extends React.Component {
     async salvar(evento){
         try{
             evento.preventDefault();
-            const {codigo, descricao, cargaHoraria, preco, categoria} = this.state;
+            const {_id, codigo, descricao, cargaHoraria, preco, categoria} = this.state;
 
             if(!codigo || !descricao || !cargaHoraria || !preco || !categoria){
                 alert('favor preencher todos os dados');
                 return;
             }
 
-            await axios.post(URL, {
+            const body = {
                 codigo,
                 descricao,
                 cargaHoraria,
                 preco, 
                 categoria
-            });
+            };
 
-            alert('Curso cadastrado com sucesso!');
+            if(_id){
+                await axios.put(URL+'/'+_id, body);
+                alert('Curso atualizado com sucesso!');
+            }else{
+                await axios.post(URL, body);
+                alert('Curso cadastrado com sucesso!');
+            }
+            
             await this.getCursos();
             this.limpar();
         }catch(e){
@@ -112,8 +121,19 @@ export class AgrupamentoCurso extends React.Component {
         }
     }
 
+    selecionarCurso(curso){
+        this.setState({
+            _id: curso._id,
+            codigo: curso.codigo,
+            descricao: curso.descricao,
+            cargaHoraria: curso.cargaHoraria,
+            categoria: curso.categoria,
+            preco: curso.preco,
+        })
+    }
+
     render() {
-        const { cursos, codigo, descricao, cargaHoraria, preco, categoria } = this.state;
+        const { _id, cursos, codigo, descricao, cargaHoraria, preco, categoria } = this.state;
         const {excluirCurso, 
             setCargaHoraria, 
             setCategoria, 
@@ -121,7 +141,8 @@ export class AgrupamentoCurso extends React.Component {
             setDescricao, 
             setPreco,
             limpar,
-            salvar} = this;
+            salvar,
+            selecionarCurso} = this;
 
         return (
             <div className="row border-bottom">
@@ -132,6 +153,7 @@ export class AgrupamentoCurso extends React.Component {
                         cargaHoraria={cargaHoraria}
                         preco={preco}
                         categoria={categoria}
+                        _id={_id}
 
                         setCargaHoraria={setCargaHoraria}
                         setCategoria={setCategoria}
@@ -146,7 +168,8 @@ export class AgrupamentoCurso extends React.Component {
                 <div className="col-md-6">
                     <ListagemCurso
                         cursos={cursos}
-                        excluirCurso={excluirCurso}/>
+                        excluirCurso={excluirCurso}
+                        selecionarCurso={selecionarCurso}/>
                 </div>
             </div>
         );
