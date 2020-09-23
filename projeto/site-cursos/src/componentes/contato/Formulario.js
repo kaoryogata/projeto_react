@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setValorContato } from '../../store/actions/contato';
+import { setValorContato, limparFormularioContato } from '../../store/actions/contato';
 
 const FormularioContato = props => {
 
-    const {data, nome, email, assunto, setValorContato} = props;
+    const {data, nome, email, assunto, setValorContato, limparFormularioContato} = props;
     return(
     <div>
         <h3 className="border-bottom">Formulário</h3> 
@@ -46,7 +46,7 @@ const FormularioContato = props => {
                 <button className="btn btn-primary ml-3 mb-3">
                     Adicionar
                 </button>
-                <button className="btn btn-secondary ml-3 mb-3">
+                <button className="btn btn-secondary ml-3 mb-3" onClick = {limparFormularioContato}>
                     Limpar
                 </button>
             </div>
@@ -64,7 +64,8 @@ const mapStoreToProps = store => ({
 });
 
 const mapActionsToProps = dispatch => bindActionCreators ({
-    setValorContato
+    setValorContato,
+    limparFormularioContato
 }, dispatch);
 
 //funçao para conectar as props ao formulario

@@ -1,5 +1,6 @@
 import moment from 'moment';
-import {SET_VALOR_CONTATO_TYPE} from '../actions/contato';
+import {SET_VALOR_CONTATO_TYPE,
+    LIMPAR_FORMULARIO_CONTATO} from '../actions/contato';
 
 const INITIAL_STATE = {
     data : moment().format('YYYY-MM-DD'),
@@ -15,6 +16,7 @@ export default (state = INITIAL_STATE, action) => {
         case SET_VALOR_CONTATO_TYPE + "NOME" :return {...state, nome : action.value}
         case SET_VALOR_CONTATO_TYPE + "EMAIL" :return {...state, email : action.value}
         case SET_VALOR_CONTATO_TYPE + "ASSUNTO" :return {...state, assunto : action.value}
+        case LIMPAR_FORMULARIO_CONTATO : return INITIAL_STATE;
         default: return state;
     }
 }
