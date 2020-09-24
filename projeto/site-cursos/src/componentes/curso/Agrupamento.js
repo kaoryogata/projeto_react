@@ -1,177 +1,44 @@
 import React from 'react';
-import axios from 'axios';
 import { FormularioCurso } from './Formulario';
-import { ListagemCurso } from './Listagem';
+import { ListagemCursos } from './Listagem';
+import { connect } from 'react-redux';
 
-const URL = 'http://localhost:3200/api/cursos';
-
-export class AgrupamentoCurso extends React.Component {
-
-    constructor(props){
-        super(props);
-
-        this.excluirCurso = this.excluirCurso.bind(this);
-        this.setCargaHoraria = this.setCargaHoraria.bind(this);
-        this.setCategoria = this.setCategoria.bind(this);
-        this.setCodigo = this.setCodigo.bind(this);
-        this.setDescricao = this.setDescricao.bind(this);
-        this.setPreco = this.setPreco.bind(this);
-        this.limpar = this.limpar.bind(this);
-        this.salvar = this.salvar.bind(this);
-        this.selecionarCurso = this.selecionarCurso.bind(this);
-    }
-
-    initialState = {
-        _id: null,
-        codigo: 0,
-        descricao: '',
-        cargaHoraria: 0,
-        preco: 0,
-        categoria: 'REDES'
-    }
-
-    state = {
-        ...this.initialState,
-        cursos : []
-    }
-
-    limpar(evento){
-        if(evento){
-            evento.preventDefault();
-        }
-        
-        this.setState(this.initialState);
-    }
-
-    async componentDidMount(){
-        await this.getCursos();
-    }
-
-    async getCursos(){
-        try{
-            const response = await axios.get(URL);
-            this.setState({cursos : response.data});
-        }catch(e){
-            console.log(e);
-        }
-    }
-
-    async excluirCurso(_id){
-        if(window.confirm('Confirma excluir o curso selecionado?')){
-            try{
-                await axios.delete(URL+'/'+_id);
-                alert('Curso deletado com sucesso');
-                await this.getCursos();
-            }catch(e){
-                console.log(e)
-            }
-        }
-    }
-
-    setCodigo(evento){
-        this.setState({codigo: evento.target.value});
-    }
-
-    setDescricao(evento){
-        this.setState({descricao: evento.target.value});
-    }
-
-    setCargaHoraria(evento){
-        this.setState({cargaHoraria: evento.target.value});
-    }
-
-    setPreco(evento){
-        this.setState({preco: evento.target.value});
-    }
-
-    setCategoria(evento){
-        this.setState({categoria: evento.target.value});
-    }
-
-    async salvar(evento){
-        try{
-            evento.preventDefault();
-            const {_id, codigo, descricao, cargaHoraria, preco, categoria} = this.state;
-
-            if(!codigo || !descricao || !cargaHoraria || !preco || !categoria){
-                alert('favor preencher todos os dados');
-                return;
-            }
-
-            const body = {
-                codigo,
-                descricao,
-                cargaHoraria,
-                preco, 
-                categoria
-            };
-
-            if(_id){
-                await axios.put(URL+'/'+_id, body);
-                alert('Curso atualizado com sucesso!');
-            }else{
-                await axios.post(URL, body);
-                alert('Curso cadastrado com sucesso!');
-            }
-            
-            await this.getCursos();
-            this.limpar();
-        }catch(e){
-            console.log(e);
-        }
-    }
-
-    selecionarCurso(curso){
-        this.setState({
-            _id: curso._id,
-            codigo: curso.codigo,
-            descricao: curso.descricao,
-            cargaHoraria: curso.cargaHoraria,
-            categoria: curso.categoria,
-            preco: curso.preco,
-        })
-    }
-
+class AgrupamentoCurso extends React.Component {
     render() {
-        const { _id, cursos, codigo, descricao, cargaHoraria, preco, categoria } = this.state;
-        const {excluirCurso, 
-            setCargaHoraria, 
-            setCategoria, 
-            setCodigo, 
-            setDescricao, 
-            setPreco,
-            limpar,
-            salvar,
-            selecionarCurso} = this;
+        const {msgErro, msgSucesso} = this.props
 
         return (
-            <div className="row border-bottom">
-                <div className="col-md-6"> 
-                    <FormularioCurso 
-                        codigo={codigo}
-                        descricao={descricao}
-                        cargaHoraria={cargaHoraria}
-                        preco={preco}
-                        categoria={categoria}
-                        _id={_id}
+            <>
+                {!msgErro && msgSucesso ?
+                    <div className="alert alert-success" role="alert">
+                        <strong>Parabéns</strong> {msgSucesso}
+                    </div>
+                    : null
+                }
 
-                        setCargaHoraria={setCargaHoraria}
-                        setCategoria={setCategoria}
-                        setCodigo={setCodigo}
-                        setDescricao={setDescricao}
-                        setPreco={setPreco}
-
-                        limpar={limpar}
-                        salvar={salvar}
-                    />
+                {msgErro ?
+                    <div className="alert alert-danger" role="alert">
+                        <strong>Ops!</strong> {msgErro}
+                    </div>
+                    : null
+                }
+                <div className="row border-bottom">
+                    <div className="col-md-6">
+                        <FormularioCurso />
+                    </div>
+                    <div className="col-md-6">
+                        <ListagemCursos />
+                    </div>
                 </div>
-                <div className="col-md-6">
-                    <ListagemCurso
-                        cursos={cursos}
-                        excluirCurso={excluirCurso}
-                        selecionarCurso={selecionarCurso}/>
-                </div>
-            </div>
+            </>
         );
     }
 }
+
+const mapStoreToProps = store => ({
+    msgSucesso : store.curso.msgSucesso,
+    msgErro : store.curso.msgErro
+});
+
+const conectado = connect(mapStoreToProps, null)(AgrupamentoCurso);
+export { conectado as AgrupamentoCurso}

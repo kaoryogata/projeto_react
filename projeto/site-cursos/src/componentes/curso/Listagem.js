@@ -1,7 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { 
+    getCursosAPI, 
+    excluirCurso,
+    selecionarCurso
+} from '../../store/actions/curso';
 
-export const ListagemCurso = props => {
+const ListagemCursos = props => {
     const isPublic = props.isPublic || false;
+
+    const {getCursosAPI} = props;
+
+    useEffect(()=>{
+        getCursosAPI();    
+    }, [getCursosAPI]);
 
     const exibirLinhas = () => {
         const cursos = props.cursos || [];
@@ -56,3 +69,16 @@ export const ListagemCurso = props => {
         </div>
     );
 }
+
+const mapStoreToProps = store => ({
+    cursos : store.curso.lista
+});
+
+const mapActionToProps = dispatch => bindActionCreators({
+    getCursosAPI,
+    excluirCurso,
+    selecionarCurso
+}, dispatch);
+
+const conectado = connect(mapStoreToProps, mapActionToProps)(ListagemCursos);
+export { conectado as ListagemCursos};

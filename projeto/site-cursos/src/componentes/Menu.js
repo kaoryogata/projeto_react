@@ -1,26 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
-import axios from 'axios';
 import { connect } from 'react-redux';
 
-const URL = 'http://localhost:3200/api/cursos';
-
 const Menu = props => {
-
-    const [cursos, setCursos] = useState([]);
-
-    useEffect(() => {
-        const getCursos = async () =>{
-            try{
-                const response = await axios.get(URL);
-                setCursos(response.data);
-            }catch(e){
-                console.log(e)
-            }
-        }
-
-        getCursos();
-    }, []);
+    const {totalCursos} = props;
 
     return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
         <Link className="navbar-brand" to="/">
@@ -31,7 +14,7 @@ const Menu = props => {
             <span className="navbar-toggler-icon"></span> </button>
         <div className="collapse navbar-collapse" id="navbarContent"> <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-<Link className="nav-link" to="/cursos">Cursos{cursos && cursos.length > 0 ? '('+cursos.length+')' : ''}</Link>
+                <Link className="nav-link" to="/cursos">Cursos{totalCursos > 0 ? '('+totalCursos+')' : ''}</Link>
             </li>
             <li className="nav-item">
                 <Link className="nav-link" to="/contato">Contato</Link>
@@ -44,7 +27,8 @@ const Menu = props => {
 }
 
 const mapStoreToProps = store => ({
-    nome : store.contato.nome
+    nome : store.contato.nome,
+    totalCursos : store.curso.lista.length
 });
 
 const conectado = connect(mapStoreToProps, null)(Menu);
